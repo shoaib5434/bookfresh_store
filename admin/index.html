@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="admin.css" />
+     <!--icons link bootstrap-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Admin Order </title>
+    <style type="text/css">
+      .modal-dialog {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+      }
+      span.Paid {
+        background-color: green !important;
+        padding: 5px 20px;
+        color : white;
+      }
+      span.Unpaid {
+        background-color: yellow;
+        padding: 5px 20px;
+        color : black;
+      }
+
+
+      /* Confirm Dailog */
+
+      .confirm-dialog {
+        width: 320px;
+        height: 150px;
+        border-radius: 5px;
+        background: white;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 9999;
+        display: none;
+      }
+      .confirm-dialog > * {
+        width: 100%;
+        position: relative;
+      }
+      .confirm-dialog p {
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+        line-height: 50px;
+      }
+      .confirm-dialog .buttons {
+        height: 90px;
+      }
+      .confirm-dialog .buttons button {
+        width: 150px;
+        transform: translateX(10px);
+        height: 50px;
+        border:none;
+        border-radius: 5px;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        background: red;
+      }
+      .bgBlur {
+        background: rgba(0,0,0,.7);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><img src="Img/logo.png" width="45px"
+                    >BookFresh</div>
+            <div class="list-group list-group-flush my-3">
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active"><i
+                        class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-project-diagram me-2"></i>Orders</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-chart-line me-2"></i>Sales</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-shopping-cart me-2"></i>Store Mng</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-gift me-2"></i>Products</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-comment-dots me-2"></i>Chat</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-map-marker-alt me-2"></i>Outlet</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+                        class="fas fa-power-off me-2"></i>Logout</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                    <h2 class="fs-2 m-0">Dashboard</h2>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-2"></i>Admin Panel
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="#">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+<!--page information-->
+             <div class="container-fluid px-4">
+                <div class="row g-3 my-2">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">720</h3>
+                                <p class="fs-5">Products</p>
+                            </div>
+                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">4920</h3>
+                                <p class="fs-5">Sales</p>
+                            </div>
+                            <i
+                                class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">3899</h3>
+                                <p class="fs-5">Delivery</p>
+                            </div>
+                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">%25</h3>
+                                <p class="fs-5">Increase</p>
+                            </div>
+                            <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+                </div>
+<!--Order-->
+<div class="container">
+    <div class="row">
+        <h3 class="fs-4 mb-3">Add Products</h3>
+      <div class="col-12">
+        <table id="orderTable" class="table table-bordered table bg-white rounded shadow-sm  table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Order ID</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status Order</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+       
+      </div>
+    </div>
+  </div>
+  <!--Recent Order-->
+<div class="container">
+    <div class="row">
+        <h3 class="fs-4 mb-3">Add Products</h3>
+      <div class="col-12">
+        <table class="recentProductTable table table-bordered table bg-white rounded shadow-sm  table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">ID</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ <!-- Modal Pop Up -->
+    <div id="myModal" class="modal fade " tabindex="-1">
+        <div class="modal-dialog modal-fullscreen-xxl-down ">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h5 class="modal-title">VIEW ORDER</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body bg-light  ">
+                    <div class="container-fluid">
+
+                        <div class="container">
+                          <!-- Title -->
+                          <div class="d-flex justify-content-between align-items-center py-3">
+                            <h2 class="h5 mb-0"><a href="#" class="text-muted"></a> Order <b class="order-modal-title">#16123222</b></h2>
+                          </div>
+                        
+                          <!-- Main content -->
+                          <div class="row">
+                            <div class="col-lg-8">
+                              <!-- Details -->
+                              <div class="card mb-4">
+                                <div class="card-body">
+                                  <div class="mb-3 d-flex justify-content-between">
+                                    <div>
+                                      <span class="me-3 order-modal-date">22-11-2021</span>
+                                      <span class="me-3 order-modal-title">#16123222</span>
+                                    </div>
+                                    <div class="d-flex">
+                    
+                                      <div class="dropdown">
+                                        <button class="btn btn-link p-0 text-muted" type="button" data-bs-toggle="dropdown">
+                                          <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil"></i> Edit</a></li>
+                                          <li><a class="dropdown-item" href="#"><i class="bi bi-printer"></i> Print</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <table class="table table-bordered productsTable">
+                                    <thead>
+                                        <tr>
+                                          <th scope="col">Order Detail</th>
+                                          <th scope="col">Quantity</th>
+                                          <th scope="col">Price</th>
+                                        </tr>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                      <tr>
+                                        <td colspan="2">Subtotal</td>
+                                        <td class="text-end order-modal-subtotal">200</td>
+                                      </tr>
+                                      <tr>
+                                        <td colspan="2">Shipping</td>
+                                        <td class="text-end">70</td>
+                                      </tr>
+                                    
+
+                                      <tr class="fw-bold">
+                                        <td colspan="2">TOTAL</td>
+                                        <td class="text-end order-modal-total">270</td>
+                                      </tr>
+
+                                    </tfoot>
+                                  </table>
+                                  
+                                </div>
+                              </div>
+                              <!-- Payment -->
+                              <div class="card mb-4">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <h3 class="h6">Payment Method</h3>
+                                      <p><b class="order-modal-method">Cash On Delivery</b><br>
+                                      Total: <b class="order-modal-total"></b> <span class="badge rounded-pill order-modal-status">PAID</span></p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <h3 class="h6">Billing address</h3>
+                                      <address>
+                                        <strong class="order-modal-name"></strong><br>
+                                        <p class="order-modal-address"></p>
+                                        <abbr title="Phone">P:</abb> <b class="order-modal-phone"></b>
+                                      </address>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4">
+                               <div class="card mb-4">
+                                <!-- Shipping information -->
+                                <div class="card-body">
+                                  <h3 class="h6">Shipping Information</h3>
+                                 
+                                  <hr>
+                                  <h3 class="h6">Address</h3>
+                                  <address>
+                                    <strong class="order-modal-name">Laiba Latif</strong><br>
+                                    <p class="order-modal-address"><p>
+                                    <abbr title="Phone">P:</abb> <b class="order-modal-phone"></b>
+                                  </address>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                          </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+ 
+    <div class="confirm-dialog">
+      <p>Are You Sure You Wannt To Delete Order?</p>
+      <div class="buttons">
+        <button>Cancel</button>
+        <button>Delete</button>
+      </div>
+    </div>
+    <div class="bgBlur"></div>
+    <!-- /#page-content-wrapper -->
+    </div>
+    <script src="../../assets/js/plugins/chartjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var el = document.getElementById("wrapper");
+        var toggleButton = document.getElementById("menu-toggle");
+
+        toggleButton.onclick = function () {
+            el.classList.toggle("toggled");
+        };
+
+        $(document).ready(function(){
+          let AllOrders = [];
+          $.ajax({
+            url : 'action.php',
+            method : 'post',
+            data : {
+              action : 'fetchAllOrders'
+            },
+            dataType : 'json',
+            success : function(data) {
+              AllOrders = data;
+              overwriteOrders(data);
+            }
+          })
+
+          function overwriteOrders(data) {
+            let status,date;
+            for (let i = 0; i < data.length; ++i) {
+              status = (data[i].payment_status != 'unpaid') ? 'Paid' : 'Unpaid';
+              date = data[i].date;
+              date.replace('-','/');
+              $("#orderTable tbody").append(`
+                <tr>
+                  <th scope="row">`+ (i + 1) +`</th>
+                  <td>#`+ data[i].order_id +`</td>
+                  <td>`+ date +`</td>
+                  <td><span class="`+ status +` rounded-pill">`+ status +`</span></td>
+                  <td>
+                    
+                    <a href="#myModal" role="button" class="orderDetail btn btn-md float-left btn-primary" data-bs-toggle="modal" data-id="`+ data[i].order_id +`" data-index="`+ i +`"><i class="far fa-eye"></i></a>
+                    <button type="button" class="btn btn-danger deleteOrder" data-id="`+ data[i].order_id +`"><i class="far fa-trash-alt"></i></button>
+                   
+                  </td>
+                </tr>`);
+            }
+            $('.orderDetail').on('click',function(){
+              let index = $(this).data('index');
+              $.ajax({
+                url : 'action.php',
+                method : 'post',
+                data : {
+                  action : "fetchSingleOrder",
+                  id : $(this).data('id')
+                },
+                dataType : 'json',
+                success : function(data) {
+                  $('.order-modal-title').text('#' + AllOrders[index].order_id);
+                  $('.order-modal-date').text(AllOrders[index].date);
+                  $('.order-modal-phone').text(data.phone);
+                  $('.order-modal-method').text((AllOrders[index].payment_method == 'COD' ? 'Cash On Delivery' : 'Paypal'));
+                  $('.order-modal-name').text(data.name);
+                  $('.order-modal-address').text(AllOrders[index].delivery_address);
+                  if (AllOrders[index].payment_status == 'unpaid') {
+                    $('.order-modal-status').css('background-color','yellow');
+                    $('.order-modal-status').text('Unpaid');
+                  }
+                  else {
+                    $('.order-modal-status').css('background-color','green');
+                    $('.order-modal-status').text('Paid');
+                  }
+                  $('.productsTable tbody').html('');
+                  let Subtotal = 0;
+                  for (let i = 0; i < data.products.length; ++i) {
+                    Subtotal += parseInt(data.products[i].price) * parseInt(data.products[i].quantity);
+                    $('.productsTable tbody').append(`
+                        <tr>
+                          <td>
+                            <div class="d-flex mb-2">
+                              <div >
+                                <img src="../Images/`+ data.products[i].product_img +`" alt="" width="70" class="img-fluid">
+                              </div>
+                              <div class="flex-lg-grow-1 ms-3">
+                                <h6 class="small mb-0"><a href="#" class="text-reset">`+ data.products[i].product_name +`</a></h6>
+                                <span class="small">Email: `+ data.email +`</span>
+
+                              </div>
+                            </div>
+                          <td>`+ data.products[i].quantity +`</td>
+                          <td class="text-end">`+ data.products[i].price +`</td>
+                        </tr>
+                      `);
+                  }
+                  $('.order-modal-subtotal').text(Subtotal);
+                  Subtotal += 70;
+                  $('.order-modal-total').text(Subtotal);
+                }
+              })
+            })
+
+            $('.deleteOrder').on('click',function(){
+              let ele = $(this).parent().parent();
+              $.ajax({
+                url : 'action.php',
+                method : 'post',
+                dataType : 'json',
+                data : {id : $(this).data('id'),action : 'deleteOrder'},
+                success : function(data) {
+                  if (data.success) {
+                    ele.hide();
+                  }
+                }
+              })
+            })
+          }
+          $.ajax({
+            url : 'action.php',
+            method : 'post',
+            dataType : 'json',
+            data : {action : 'fetchAllProducts'},
+            success : function(data) {
+              console.log(data);
+              overWriteProducts(data);
+            }
+          })
+          function overWriteProducts(data) {
+            for (let i = 0; i < data.length; ++i) {
+              $('.recentProductTable').append(`
+                  <tr>
+                    <th scope="row">`+ (i+1) +`</th>
+                    <td>`+ data[i].id +`</td>
+                    <td>`+ data[i].product_name +`</td>
+                    <td>`+ data[i].price +`</td>
+                    <td>
+                      
+                    <button type="button" style="background-color:red" class="btn btn-danger deleteProduct" data-id="`+ data[i].id +`"><i class="far fa-trash-alt"></i></button>
+                    </td>
+                  </tr>
+                `);
+            }
+            $('.deleteProduct').on('click',function(){
+              let ele = $(this).parent().parent();
+              $.ajax({
+                url : 'action.php',
+                method : 'post',
+                dataType : 'json',
+                data : {id : $(this).data('id'),action : 'deleteProduct'},
+                success : function(data) {
+                  if (data.success) {
+                    ele.hide();
+                  }
+                }
+              })
+            })
+          }
+        })
+    </script>
+            
+  
+  </body>
+</html>

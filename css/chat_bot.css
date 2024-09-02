@@ -1,0 +1,96 @@
+*{
+	box-sizing: border-box;
+}
+
+.blur{
+	width: 100%;
+	height: 800px;
+	background-color: black;
+	opacity: .7;
+	display: none;
+}
+
+.main_box{
+	height: ;
+	width: 35%;
+	background-color: rgb(224, 230, 229);
+	margin-left: 58%;
+	margin-top: 10%;
+    z-index: 9999;
+	border: transparent;
+	border-radius: 15px;
+}
+.header{
+   height: 70px;
+
+   background-color:rgb(75, 188, 204);
+   text-align: center;
+   border:1px solid transparent;
+   border-radius: 10px 10px 0px 0px;
+   
+}
+.header h3{
+	color: white;
+	padding-top: 10px;
+}
+
+.message {
+	width: 100%;
+	position: relative;
+	height: fit-content;
+}
+
+.chatBody {
+	height: 300px;
+	overflow: auto;
+}
+.message p {
+	position: relative;
+	padding: 1%;
+	padding: 10px;
+	height: fit-content;
+	max-width: 90%;
+	width: fit-content;
+	border: 1px solid transparent;
+	border-radius: 13px 13px 0px 13px;
+
+}
+.visitor p {
+	background-color: rgb(1, 164, 190);
+	color: white;
+	float: right;
+}
+.admin_chat p {
+	background-color: white;
+	color: black;
+}
+.type_msg{
+	height: 30px;
+	background-color: ;
+	border:;
+	position: relative;
+}
+.input{
+	position: relative;
+	width: 75%;
+	border:none;
+	box-sizing: border-box;
+	border-left: solid rgb(224, 230, 229);
+    border-right:solid rgb(224, 230, 229);
+	
+}
+form > * {
+	position: relative;display: inline-block;
+}
+.send{
+	width: 20%;
+	box-sizing: border-box;
+	border: none;
+	background-color: blue;
+	color: white;
+	height: 20px;
+}
+.bottom{
+	height: 20px;
+	   background-color:rgb(75, 188, 204);	
+}
